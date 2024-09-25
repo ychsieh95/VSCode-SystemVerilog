@@ -3,10 +3,10 @@
     "displayName": "SystemVerilog - Language Support",
     "description": "Language support for Verilog and SystemVerilog.",
     "version": "0.13.10",
-    "publisher": "eirikpre",
+    "publisher": "Holey",
     "author": {
-        "name": "Eirik Prestegårdshus",
-        "email": "eirikpre@gmail.com"
+        "name": "Holey",
+        "email": "ychsieh95@gmail.com"
     },
     "license": "MIT",
     "categories": [
@@ -28,7 +28,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/eirikpre/VSCode-SystemVerilog"
+        "url": "https://github.com/ychsieh95/VSCode-SystemVerilog"
     },
     "extensionKind": [
         "workspace"
