@@ -582,7 +582,7 @@ repository:
           [ \t\n]*\b(var|wire|tri|tri[01]|supply[01]|wand|triand|wor|trior|trireg|reg|integer|int|longint|shortint|logic|bit|byte|shortreal|string|time|realtime|real|process|void)\b
         name: storage.type.built-in.systemverilog
       - match: >-
-          [ \t\n]*\b(uvm_active_passive_enum|uvm_agent|uvm_analysis_export|uvm_analysis_imp|uvm_analysis_port|uvm_bitstream_t|uvm_callbacks|uvm_comparer|uvm_component_registry|uvm_component|uvm_config_db|uvm_domain|uvm_driver|uvm_env|uvm_monitor|uvm_objection|uvm_object|uvm_packer|uvm_phase|uvm_printer|uvm_radix_enum|uvm_recorder|uvm_reg_block|uvm_reg_field|uvm_reg|uvm_report_server|uvm_scope_stackuvm_sequence_base|uvm_sequence_item|uvm_sequence_state|uvm_sequencer_base|uvm_sequencer|uvm_sequence|uvm_test|uvm_tlm_analysis_fifo|uvm_tlm_fifo|uvm_transaction|uvm_verbosity)\b
+          [ \t\n]*\b(uvm_active_passive_enum|uvm_agent|uvm_analysis_export|uvm_analysis_imp|uvm_analysis_port|uvm_bitstream_t|uvm_callbacks|uvm_comparer|uvm_component_registry|uvm_component|uvm_config_db|uvm_domain|uvm_driver|uvm_env|uvm_monitor|uvm_objection|uvm_object|uvm_packer|uvm_phase|uvm_printer|uvm_radix_enum|uvm_recorder|uvm_reg_block|uvm_reg_field|uvm_reg|uvm_report_cb|uvm_report_server|uvm_scope_stackuvm_sequence_base|uvm_sequence_item|uvm_sequence_state|uvm_sequencer_base|uvm_sequencer|uvm_sequence|uvm_test|uvm_tlm_analysis_fifo|uvm_tlm_fifo|uvm_transaction|uvm_verbosity)\b
         name: storage.type.uvm.systemverilog
   modifiers:
     match: >-
