@@ -26,9 +26,9 @@
     "clocking/endclocking": {
         "prefix": "clocking",
         "body": [
-            "${1:default }clocking @(${2:posedge} ${3:clk}): ${4:default_cb}",
+            "${1:default }clocking ${2:default_cb} @(${3:posedge} ${4:clk})",
             "\t$0",
-            "endclocking"
+            "endclocking: ${2:default_cb}"
         ],
         "description": "Snippet for a clocking/endclocking block"
     },
