@@ -26,11 +26,19 @@
     "clocking/endclocking": {
         "prefix": "clocking",
         "body": [
-            "${1:default }clocking ${2:default_cb} @(${3:posedge} ${4:clk})",
-            "\t$0",
-            "endclocking: ${2:default_cb}"
+            "${0:default }clocking ${1:default_cb} @(${2:posedge} ${3:clk})",
+            "\t$4",
+            "endclocking: ${1:default_cb}"
         ],
         "description": "Snippet for a clocking/endclocking block"
+    },
+    "constraint": {
+        "prefix": "constraint",
+        "body": [
+            "constraint $0 {",
+            "\t$1",
+            "} // $0"
+        ]
     },
     "force": {
         "prefix": "force",
