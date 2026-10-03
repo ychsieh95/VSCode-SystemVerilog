@@ -1,14 +1,24 @@
+# Build and release artifacts
+*.vsix
+/dist/
+/out/
+/packages/
+/releases/
+/src/compiling/ANTLR/grammar/build/
+/syntaxes/systemverilog.tmLanguage.json
+
+# Dependencies
+/node_modules/
+
+# Local scripts
+/scripts/
+
+# Test and coverage artifacts
 /.nyc_output/
 /.vscode-test/
 /coverage/
-/dist/
-/make/
-/node_modules/
-/out/
-/packages/
 /results.xml
-/src/compiling/ANTLR/grammar/build/
-/syntaxes/systemverilog.tmLanguage.json
+
+# Tool and operating system files
 **/.antlr
-*.vsix
 .DS_Store
