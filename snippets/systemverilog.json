@@ -10,7 +10,7 @@
     "assign": {
         "prefix": "assign",
         "body": [
-            "assign ${0:var} = ${1:value};"
+            "assign ${1:var} = ${2:value};$0"
         ],
         "description": "Snippet for an assignment"
     },
@@ -26,19 +26,20 @@
     "clocking/endclocking": {
         "prefix": "clocking",
         "body": [
-            "${0:default }clocking ${1:default_cb} @(${2:posedge} ${3:clk})",
-            "\t$4",
-            "endclocking: ${1:default_cb}"
+            "${1:default }clocking ${2:default_cb} @(${3:posedge} ${4:clk})",
+            "\t$0",
+            "endclocking: ${2:default_cb}"
         ],
         "description": "Snippet for a clocking/endclocking block"
     },
     "constraint": {
         "prefix": "constraint",
         "body": [
-            "constraint $0 {",
-            "\t$1",
-            "} // $0"
-        ]
+            "constraint ${1:name} {",
+            "\t$0",
+            "} // ${1:name}"
+        ],
+        "description": "Snippet for a constraint block"
     },
     "force": {
         "prefix": "force",
@@ -50,7 +51,7 @@
     "always": {
         "prefix": "always",
         "body": [
-            "always @($1:sensitivity_list) begin",
+            "always @(${1:sensitivity_list}) begin",
             "\t$0",
             "end"
         ],

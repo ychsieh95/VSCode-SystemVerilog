@@ -20,10 +20,15 @@ patterns:
   - include: '#class-declaration'
   - include: '#function-task'
   - include: '#sequence'
+  - include: '#class-constructor-call'
   - include: '#keywords'
   - include: '#all-types'
+  - include: '#parameterized-class-type'
+  - include: '#class-parameter-list'
+  - include: '#static-class-function'
   - include: '#module-parameters'
   - include: '#module-no-parameters'
+  - include: '#user-defined-variable-declaration'
   - include: '#system-tf'
   - include: '#assertion'
   - include: '#bind-directive'
@@ -343,6 +348,66 @@ repository:
       - include: '#module-binding'
       - include: '#identifiers'
     name: meta.class.systemverilog
+  parameterized-class-type:
+    match: >-
+      [ \t]*\b([a-zA-Z_][a-zA-Z0-9_$]*)(?=[ \t]*#[ \t]*\([^\n]*(?:::[ \t]*[a-zA-Z_][a-zA-Z0-9_$]*[ \t]*\(|=[ \t]*new[ \t]*\())
+    captures:
+      '1':
+        name: storage.type.class.systemverilog
+    name: meta.type.class.parameterized.systemverilog
+  class-parameter-list:
+    begin: '(#)[ \t]*(\()(?=[^\n]*(?:::[ \t]*[a-zA-Z_][a-zA-Z0-9_$]*[ \t]*\(|=[ \t]*new[ \t]*\())'
+    beginCaptures:
+      '1':
+        name: keyword.operator.param.systemverilog
+      '2':
+        name: punctuation.section.parameters.begin
+    end: \)
+    endCaptures:
+      '0':
+        name: punctuation.section.parameters.end
+    patterns:
+      - include: '#class-parameter-binding'
+      - include: '#comments'
+      - include: '#constants'
+      - include: '#operators'
+      - include: '#strings'
+      - include: '#identifiers'
+    name: meta.parameters.class.systemverilog
+  class-parameter-binding:
+    begin: '(\.)([a-zA-Z_][a-zA-Z0-9_$]*)[ \t]*(\()'
+    beginCaptures:
+      '1':
+        name: punctuation.accessor.dot.systemverilog
+      '2':
+        name: constant.other.systemverilog
+      '3':
+        name: punctuation.section.arguments.begin
+    end: \)
+    endCaptures:
+      '0':
+        name: punctuation.section.arguments.end
+    patterns:
+      - include: '#comments'
+      - include: '#constants'
+      - include: '#operators'
+      - include: '#strings'
+      - include: '#identifiers'
+    name: meta.parameter.binding.class.systemverilog
+  static-class-function:
+    match: '(::)[ \t]*([a-zA-Z_][a-zA-Z0-9_$]*)(?=[ \t]*\()'
+    captures:
+      '1':
+        name: keyword.operator.scope.systemverilog
+      '2':
+        name: entity.name.function.systemverilog
+    name: meta.function-call.static.systemverilog
+  class-constructor-call:
+    match: '[ \t]*\b(new)(?=[ \t]*\()'
+    captures:
+      '1':
+        name: support.function.systemverilog
+    name: meta.function-call.constructor.systemverilog
   sv-support:
     match: >-
       \b(and|nand|nor|or|xor|xnor|buf|not|bufif[01]|notif[01]|r?[npc]mos|tran|r?tranif[01]|pullup|pulldown)\b
@@ -568,21 +633,24 @@ repository:
       - include: '#operators'
       - include: '#constants'
       - include: '#strings'
-      - match: >-
-          [ \t\n]*\b([a-zA-Z_][a-zA-Z0-9_$]*)[ \t\n]+([a-zA-Z_][a-zA-Z0-9_]*)[,= \t\n]*
-        captures:
-          '1':
-            name: storage.type.interface.systemverilog
-          '2':
-            name: variable.other.identifier.systemverilog
+      - include: '#user-defined-variable-declaration'
       - include: '#storage-scope'
+  user-defined-variable-declaration:
+    match: >-
+      [ \t\n]*\b([a-zA-Z_][a-zA-Z0-9_$]*)[ \t\n]+([a-zA-Z_][a-zA-Z0-9_$]*)\b(?=[ \t\n]*(?:\[|,|=|;))
+    captures:
+      '1':
+        name: storage.type.user-defined.systemverilog
+      '2':
+        name: variable.other.identifier.systemverilog
+    name: meta.variable.declaration.user-defined.systemverilog
   built-ins:
     patterns:
       - match: >-
           [ \t\n]*\b(var|wire|tri|tri[01]|supply[01]|wand|triand|wor|trior|trireg|reg|integer|int|longint|shortint|logic|bit|byte|shortreal|string|time|realtime|real|process|void)\b
         name: storage.type.built-in.systemverilog
       - match: >-
-          [ \t\n]*\b(uvm_active_passive_enum|uvm_agent|uvm_analysis_export|uvm_analysis_imp|uvm_analysis_port|uvm_bitstream_t|uvm_callbacks|uvm_comparer|uvm_component_registry|uvm_component|uvm_config_db|uvm_domain|uvm_driver|uvm_env|uvm_monitor|uvm_objection|uvm_object|uvm_packer|uvm_phase|uvm_printer|uvm_radix_enum|uvm_recorder|uvm_reg_block|uvm_reg_field|uvm_reg|uvm_report_cb|uvm_report_server|uvm_scope_stackuvm_sequence_base|uvm_sequence_item|uvm_sequence_state|uvm_sequencer_base|uvm_sequencer|uvm_sequence|uvm_test|uvm_tlm_analysis_fifo|uvm_tlm_fifo|uvm_transaction|uvm_verbosity)\b
+          [ \t\n]*\b(uvm_active_passive_enum|uvm_agent|uvm_analysis_export|uvm_analysis_imp|uvm_analysis_port|uvm_bitstream_t|uvm_callbacks|uvm_comparer|uvm_component_registry|uvm_component|uvm_config_db|uvm_domain|uvm_driver|uvm_env|uvm_monitor|uvm_objection|uvm_object|uvm_packer|uvm_phase|uvm_printer|uvm_radix_enum|uvm_recorder|uvm_reg_block|uvm_reg_field|uvm_reg|uvm_report_cb|uvm_report_server|uvm_scope_stack|uvm_sequence_base|uvm_sequence_item|uvm_sequence_state|uvm_sequencer_base|uvm_sequencer|uvm_sequence|uvm_test|uvm_tlm_analysis_fifo|uvm_tlm_fifo|uvm_transaction|uvm_verbosity)\b
         name: storage.type.uvm.systemverilog
   modifiers:
     match: >-
@@ -782,7 +850,7 @@ repository:
           '6':
             name: entity.name.function.systemverilog
       - include: '#keywords'
-      - include: '#port-net-parameter'
+      - include: '#port-declaration'
       - include: '#base-grammar'
       - include: '#identifiers'
     name: meta.import-dpi.systemverilog
