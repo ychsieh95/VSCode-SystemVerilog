@@ -21,6 +21,7 @@ patterns:
   - include: '#function-task'
   - include: '#sequence'
   - include: '#class-constructor-call'
+  - include: '#virtual-interface-variable-declaration'
   - include: '#keywords'
   - include: '#all-types'
   - include: '#parameterized-class-type'
@@ -408,6 +409,19 @@ repository:
       '1':
         name: support.function.systemverilog
     name: meta.function-call.constructor.systemverilog
+  virtual-interface-variable-declaration:
+    match: >-
+      [ \t]*\b(virtual)\b[ \t]+(?:(interface)\b[ \t]+)?([a-zA-Z_][a-zA-Z0-9_$]*)[ \t]+([a-zA-Z_][a-zA-Z0-9_$]*)\b(?=[ \t]*(?:\[|=|,|;))
+    captures:
+      '1':
+        name: storage.modifier.systemverilog
+      '2':
+        name: storage.type.interface.systemverilog
+      '3':
+        name: support.type.interface.systemverilog
+      '4':
+        name: variable.other.identifier.systemverilog
+    name: meta.variable.declaration.virtual-interface.systemverilog
   sv-support:
     match: >-
       \b(and|nand|nor|or|xor|xnor|buf|not|bufif[01]|notif[01]|r?[npc]mos|tran|r?tranif[01]|pullup|pulldown)\b
