@@ -64,8 +64,17 @@ endclass: my_class
 
 my_class obj = new();
 
+typedef enum int {
+    IDLE,
+    BUSY,
+    DONE
+} state_t;
 
-type enum int {IDLE, BUSY, DONE} state_t;
+typedef struct packed {
+    bit       valid;
+    bit [7:0] data;
+} my_struct_t;
 
-state_t current_state;
-state_t current_state = IDLE;
+state_e     current_state;
+my_struct_t my_data;
+my_class    my_obj;

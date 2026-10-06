@@ -30,10 +30,11 @@ patterns:
   - include: '#parameterized-class-type'
   - include: '#class-parameter-list'
   - include: '#static-class-function'
-  - include: '#typedef-variable-declaration'
+  - include: '#data-type-variable-declaration'
+  - include: '#enum-variable-declaration'
+  - include: '#class-object-variable-declaration'
   - include: '#module-parameters'
   - include: '#module-no-parameters'
-  - include: '#user-defined-variable-declaration'
   - include: '#system-tf'
   - include: '#assertion'
   - include: '#bind-directive'
@@ -413,7 +414,7 @@ repository:
       '2':
         name: entity.name.function.systemverilog
     name: meta.function-call.static.systemverilog
-  typedef-variable-declaration:
+  data-type-variable-declaration:
     match: >-
       [ \t]*\b([a-zA-Z_][a-zA-Z0-9_$]*_t)\b[ \t]+([a-zA-Z_][a-zA-Z0-9_$]*)\b(?=[ \t]*(?:\[|,|=|;|\)))
     captures:
@@ -421,7 +422,25 @@ repository:
         name: storage.type.user-defined.systemverilog
       '2':
         name: variable.other.identifier.systemverilog
-    name: meta.variable.declaration.typedef.systemverilog
+    name: meta.variable.declaration.data-type.systemverilog
+  enum-variable-declaration:
+    match: >-
+      [ \t]*\b([a-zA-Z_][a-zA-Z0-9_$]*_e)\b[ \t]+([a-zA-Z_][a-zA-Z0-9_$]*)\b(?=[ \t]*(?:\[|,|=|;|\)))
+    captures:
+      '1':
+        name: storage.type.enum.systemverilog
+      '2':
+        name: variable.other.identifier.systemverilog
+    name: meta.variable.declaration.enum.systemverilog
+  class-object-variable-declaration:
+    match: >-
+      [ \t]*\b((?![a-zA-Z_][a-zA-Z0-9_$]*_(?:t|e)\b)[a-zA-Z_][a-zA-Z0-9_$]*)\b[ \t]+([a-zA-Z_][a-zA-Z0-9_$]*)\b(?=[ \t]*(?:\[|,|=|;|\)))
+    captures:
+      '1':
+        name: storage.type.class.systemverilog
+      '2':
+        name: variable.other.identifier.systemverilog
+    name: meta.variable.declaration.class-object.systemverilog
   class-constructor-call:
     match: '[ \t]*\b(new)(?=[ \t]*\()'
     captures:
@@ -713,17 +732,10 @@ repository:
       - include: '#operators'
       - include: '#constants'
       - include: '#strings'
-      - include: '#user-defined-variable-declaration'
+      - include: '#data-type-variable-declaration'
+      - include: '#enum-variable-declaration'
+      - include: '#class-object-variable-declaration'
       - include: '#storage-scope'
-  user-defined-variable-declaration:
-    match: >-
-      [ \t\n]*\b([a-zA-Z_][a-zA-Z0-9_$]*)[ \t\n]+([a-zA-Z_][a-zA-Z0-9_$]*)\b(?=[ \t\n]*(?:\[|,|=|;|\)))
-    captures:
-      '1':
-        name: storage.type.user-defined.systemverilog
-      '2':
-        name: variable.other.identifier.systemverilog
-    name: meta.variable.declaration.user-defined.systemverilog
   built-ins:
     patterns:
       - match: >-
