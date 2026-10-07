@@ -218,7 +218,7 @@
         "body": [
             "function ${1:return_value} ${2:name}(${3:port_list});",
             "\t$0",
-            "endfunction"
+            "endfunction: ${2:name}"
         ],
         "description": "Snippet for a function definition"
     },
@@ -227,7 +227,7 @@
         "body": [
             "task ${1:name}(${2:port_list});",
             "\t$0",
-            "endtask"
+            "endtask: ${1:name}"
         ],
         "description": "Snippet for a task definition"
     },
@@ -236,7 +236,7 @@
         "body": [
             "class ${1:name};",
             "\t$0",
-            "endclass"
+            "endclass: ${1:name}"
         ],
         "description": "Snippet for a class definition"
     },
@@ -247,7 +247,7 @@
             "\tfunction new();",
             "\t\t$0",
             "\tendfunction",
-            "endclass"
+            "endclass: ${1:name}"
         ],
         "description": "Snippet for a class definition with extends"
     },
@@ -256,7 +256,7 @@
         "body": [
             "program ${1:name}(${2:port_list});",
             "\t$0",
-            "endprogram"
+            "endprogram: ${1:name}"
         ],
         "description": "Snippet for a program definition"
     },
@@ -267,7 +267,7 @@
             "\t${2:port_list}",
             ");",
             "\t$0",
-            "endmodule"
+            "endmodule: ${1:name}"
         ],
         "description": "Snippet for a module definition"
     },
@@ -280,7 +280,7 @@
             "\t${3:port_list}",
             ");",
             "\t$0",
-            "endmodule"
+            "endmodule: ${1:name}"
         ],
         "description": "Snippet for a parameterized module definition"
     },
@@ -298,7 +298,7 @@
         "body": [
             "generate",
             "\t$0",
-            "endgenerate"
+            "endgenerate // ${1:block_name}"
         ],
         "description": "Snippet for a generate block"
     },
@@ -321,7 +321,7 @@
         "body": [
             "interface ${1:name};",
             "\t$0",
-            "endinterface"
+            "endinterface: ${1:name}"
         ],
         "description": "Snippet for an interface definition"
     },
