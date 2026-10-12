@@ -207,32 +207,38 @@
             {
                 "language": "systemverilog",
                 "scopeName": "source.systemverilog",
-                "path": "./syntaxes/systemverilog.tmLanguage.json"
+                "path": "./syntaxes/systemverilog.tmLanguage.json",
+                "unbalancedBracketScopes": ["meta.fork-control.systemverilog"]
             },
             {
                 "language": "verilog",
                 "scopeName": "source.systemverilog",
-                "path": "./syntaxes/systemverilog.tmLanguage.json"
+                "path": "./syntaxes/systemverilog.tmLanguage.json",
+                "unbalancedBracketScopes": ["meta.fork-control.systemverilog"]
             },
             {
                 "language": "systemverilogheader",
                 "scopeName": "source.systemverilog",
-                "path": "./syntaxes/systemverilog.tmLanguage.json"
+                "path": "./syntaxes/systemverilog.tmLanguage.json",
+                "unbalancedBracketScopes": ["meta.fork-control.systemverilog"]
             },
             {
                 "language": "verilogheader",
                 "scopeName": "source.systemverilog",
-                "path": "./syntaxes/systemverilog.tmLanguage.json"
+                "path": "./syntaxes/systemverilog.tmLanguage.json",
+                "unbalancedBracketScopes": ["meta.fork-control.systemverilog"]
             },
             {
                 "language": "verilogams",
                 "scopeName": "source.systemverilog",
-                "path": "./syntaxes/systemverilog.tmLanguage.json"
+                "path": "./syntaxes/systemverilog.tmLanguage.json",
+                "unbalancedBracketScopes": ["meta.fork-control.systemverilog"]
             },
             {
                 "language": "veriloga",
                 "scopeName": "source.systemverilog",
-                "path": "./syntaxes/systemverilog.tmLanguage.json"
+                "path": "./syntaxes/systemverilog.tmLanguage.json",
+                "unbalancedBracketScopes": ["meta.fork-control.systemverilog"]
             },
             {
                 "scopeName": "markdown.verilog.codeblock",

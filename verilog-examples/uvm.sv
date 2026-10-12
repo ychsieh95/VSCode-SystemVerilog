@@ -78,3 +78,14 @@ typedef struct packed {
 state_e     current_state;
 my_struct_t my_data;
 my_class    my_obj;
+
+fork
+  begin
+
+  end
+join
+wait fork;
+disable fork;
+
+wait a;
+disable a;

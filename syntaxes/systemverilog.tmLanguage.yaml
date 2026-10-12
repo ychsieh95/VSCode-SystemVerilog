@@ -237,8 +237,9 @@ repository:
     name: meta.preprocessor.systemverilog
   keywords:
     patterns:
+      - include: '#sv-fork-control'
       - match: >-
-          \b(edge|negedge|posedge|automatic|cell|config|deassign|defparam|design|disable|endgenerate|endspecify|endtable|event|generate|genvar|ifnone|incdir|instance|liblist|library|noshowcancelled|pulsestyle_onevent|pulsestyle_ondetect|scalared|showcancelled|specify|specparam|table|use|vectored)\b
+          \b(edge|negedge|posedge|automatic|cell|config|deassign|defparam|design|endgenerate|endspecify|endtable|event|generate|genvar|ifnone|incdir|instance|liblist|library|noshowcancelled|pulsestyle_onevent|pulsestyle_ondetect|scalared|showcancelled|specify|specparam|table|use|vectored)\b
         captures:
           '1':
             name: keyword.other.systemverilog
@@ -252,9 +253,17 @@ repository:
       - include: '#sv-local'
       - include: '#sv-rand'
       - include: '#sv-support'
+  sv-fork-control:
+    match: '[ \t\n]*\b(wait|disable)[ \t\n]+(fork)\b'
+    name: meta.fork-control.systemverilog
+    captures:
+      '1':
+        name: keyword.control.systemverilog
+      '2':
+        name: keyword.control.systemverilog
   sv-control:
     match: >-
-      [ \t\n]*\b(initial|wait|force|release|assign|always|always_comb|always_ff|always_latch|forever|repeat|while|for|if|iff|else|case|casex|casez|default|endcase|return|break|continue|do|foreach|with|clocking|coverpoint|property|bins|binsof|illegal_bins|ignore_bins|randcase|modport|matches|solve|before|expect|cross|ref|first_match|srandom|struct|packed|final|chandle|alias|tagged|extern|throughout|timeprecision|timeunit|priority|type|union|uwire|wait_order|triggered|randsequence|context|pure|intersect|wildcard|typedef|new|unique|unique0|priority)\b
+      [ \t\n]*\b(initial|wait|disable|force|release|assign|always|always_comb|always_ff|always_latch|forever|repeat|while|for|if|iff|else|case|casex|casez|default|endcase|return|break|continue|do|foreach|with|clocking|coverpoint|property|bins|binsof|illegal_bins|ignore_bins|randcase|modport|matches|solve|before|expect|cross|ref|first_match|srandom|struct|packed|final|chandle|alias|tagged|extern|throughout|timeprecision|timeunit|priority|type|union|uwire|wait_order|triggered|randsequence|context|pure|intersect|wildcard|typedef|new|unique|unique0|priority)\b
     captures:
       '1':
         name: keyword.control.systemverilog
