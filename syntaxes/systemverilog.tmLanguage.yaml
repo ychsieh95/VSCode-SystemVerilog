@@ -123,10 +123,35 @@ repository:
         patterns:
           - include: '#selects'
     patterns:
+      - include: '#typedef-nested-aggregate'
       - include: '#keywords'
       - include: '#base-grammar'
       - include: '#identifiers'
     name: meta.typedef.complex.systemverilog
+  typedef-nested-aggregate:
+    begin: >-
+      \b(struct|union)(?:[ \t\n]+(packed))?(?:[ \t\n]+(signed|unsigned))?[ \t\n]*(?:\[[a-zA-Z0-9_:$\.\-\+\*/%`' \t\n\[\]\(\)]*\][ \t\n]*)?\{
+    beginCaptures:
+      '1':
+        name: keyword.control.systemverilog
+      '2':
+        name: keyword.control.systemverilog
+      '3':
+        name: storage.modifier.systemverilog
+    end: >-
+      \}(?:[ \t\n]*([a-zA-Z_][a-zA-Z0-9_$]*))(?:[ \t\n]*(\[[a-zA-Z0-9_:$\-\+` \t\n\[\]]*\])?)[ \t\n]*;
+    endCaptures:
+      '1':
+        name: variable.other.systemverilog
+      '2':
+        patterns:
+          - include: '#selects'
+    patterns:
+      - include: '#typedef-nested-aggregate'
+      - include: '#keywords'
+      - include: '#base-grammar'
+      - include: '#identifiers'
+    name: meta.typedef.nested-aggregate.systemverilog
   typedef-simple:
     begin: >-
       [ \t\n]*\b(typedef)[ \t\n]+(enum|struct|union|class|interface[ \t\n]+class)\b

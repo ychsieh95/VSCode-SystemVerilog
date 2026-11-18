@@ -71,4 +71,26 @@ suite('Syntax Grammar Tests', () => {
         }
         assert.ok(new RegExp(grammar.repository['sv-control-begin'].match).test('fork : worker'));
     });
+
+    test('nested packed aggregates do not terminate an outer complex typedef', () => {
+        const complexTypedef = grammar.repository['typedef-complex'];
+        const nestedAggregate = grammar.repository['typedef-nested-aggregate'];
+        const nestedSource = `struct packed {
+            bit [15:0] r2y_y2r_mat_11;
+            bit [15:0] r2y_y2r_mat_10;
+        } r2y_r2r_fields;`;
+
+        assert.strictEqual(complexTypedef.patterns[0].include, '#typedef-nested-aggregate');
+        assert.strictEqual(nestedAggregate.patterns[0].include, '#typedef-nested-aggregate');
+
+        const begin = new RegExp(nestedAggregate.begin).exec(nestedSource);
+        assert.ok(begin);
+        assert.strictEqual(begin[1], 'struct');
+        assert.strictEqual(begin[2], 'packed');
+
+        const end = new RegExp(nestedAggregate.end).exec(nestedSource);
+        assert.ok(end);
+        assert.strictEqual(end[1], 'r2y_r2r_fields');
+        assert.ok(new RegExp(complexTypedef.end).test('} s_reg_apu_edma_offset_4c;'));
+    });
 });

@@ -1,190 +1,210 @@
-[![](https://img.shields.io/visual-studio-marketplace/v/eirikpre.systemverilog?color=%2346bd19)](https://marketplace.visualstudio.com/items?itemName=eirikpre.systemverilog)
-[![](https://img.shields.io/visual-studio-marketplace/i/eirikpre.systemverilog)](https://marketplace.visualstudio.com/items?itemName=eirikpre.systemverilog)
-![](https://img.shields.io/visual-studio-marketplace/stars/eirikpre.systemverilog)
-[![](https://img.shields.io/github/actions/workflow/status/eirikpre/VSCode-SystemVerilog/test.yaml)](https://github.com/eirikpre/VSCode-SystemVerilog/actions?query=workflow%3ATest+branch%3Amaster)
-
 # SystemVerilog - Language Support
 
-This VS Code extension provides features to read, navigate and write SystemVerilog code much faster.
+English (en-US) | [繁體中文（台灣）](README.zh-TW.md)
+
+A VS Code extension for reading, navigating, and writing Verilog and SystemVerilog. This repository declares version **0.13.12**, extension ID **`Holey.systemverilog`**, and VS Code compatibility **`^1.61.0`**.
 
 ## Features
 
-- Elaborate [syntax highlighting](#examples)
-- Go to symbol in document (`Ctrl+Shift+O`)
-- Go to symbol in workspace folder (indexed modules/interfaces/programs/classes/packages) (`Ctrl+T`)
-- Go to definition (_works for module/interface/program/class/package names and for ports too!_) (`Ctrl+LeftClick`)
-- Find references (_works for module/interface/program/class/package names and for ports too!_) (`Ctrl+LeftClick`)
-- Quick-start on already indexed workspaces
-- Code snippets for many common blocks
-- Instantiate module from already indexed module
-- Linter capabilites with simulators ([more info on the wiki](https://github.com/eirikpre/VSCode-SystemVerilog/wiki))
-- Fast real-time error identification through an integrated SystemVerilog parser and IntelliSense (fully accurate to IEEE Standard 1800-2017)
-- If you find a bug or would like a feature, request it as an [Issue](https://github.com/eirikpre/VSCode-SystemVerilog/issues) or submit a [Pull Request](https://github.com/eirikpre/VSCode-SystemVerilog/pulls)
+| Feature | Behavior |
+| --- | --- |
+| Syntax highlighting | TextMate grammar, language configuration, file icons, and Verilog/SystemVerilog Markdown code block highlighting. |
+| Snippets | Common constructs including modules, interfaces, classes, tasks, functions, assertions, `always_ff`, `always_comb`, loops, and data declarations. |
+| Document symbols | Outline and Go to Symbol in Editor use the symbol parser. |
+| Workspace symbols | Indexed modules, interfaces, programs, classes, packages, and other detected declarations are available through Go to Symbol in Workspace. |
+| Definition navigation | Go to Definition resolves symbols, including named port connections and package-qualified names, using document and workspace symbols. |
+| References | Find All References compares indexed candidates with their resolved definitions; coverage depends on indexing precision. |
+| Hover | Shows the source line of the first resolved definition. |
+| Module instantiation | Choose an indexed module and insert named port connections and parameter overrides at the cursor. |
+| Formatting | Format Document and Format Selection call an external formatter, defaulting to `verible-verilog-format`. |
+| Diagnostics | Optional built-in ANTLR syntax checks and external Verilator, VCS, or Verible diagnostics appear in Problems. |
+| Index caching | Workspace symbol data is saved in VS Code workspace state and loaded on subsequent activation. |
+| Task integration | Contributed problem matchers recognize Questa/ModelSim, Verilator, and Verible output from user-defined tasks. |
 
-## Examples
+## Supported files
 
-### Syntax Highlighting
+| Files | Language ID | Support |
+| --- | --- | --- |
+| `.sv`, `.svh` | `systemverilog`, `systemverilogheader` | Highlighting, snippets, navigation, indexing, formatting, optional diagnostics. |
+| `.v`, `.vh` | `verilog`, `verilogheader` | Highlighting, snippets, navigation, indexing, formatting, optional diagnostics. |
+| `.va`, `.vams` | `veriloga`, `verilogams` | Highlighting and registered editor providers; external tool support depends on the backend. Excluded from the default workspace indexing glob; ANTLR verification rejects these language IDs. |
+| `.f` | `verilog-filelist` | File list highlighting and language configuration. |
+| `.sdc`, `.xdc` | `sdc`, `xdc` | Constraint highlighting and language configuration. |
 
-![Syntax Highlighting Example](resources/syntax_example_adder.png)
+## Getting started
 
-### Go To Definition
+1. Install this extension from a built VSIX using **Extensions: Install from VSIX...**, or run it from source as described below.
+2. Open a project folder containing `.sv`, `.v`, `.svh`, or `.vh` files. Opening a folder is required to initialize external compilation.
+3. Wait for the SystemVerilog status bar to show the indexed object count. Click it or run **SystemVerilog: Build index of modules in workspace** to rebuild.
+4. VS Code provides these commands: **Go to Symbol in Editor**, **Go to Symbol in Workspace**, **Go to Definition**, and **Find All References**. Hover over a resolved symbol to preview its declaration.
+5. For linting or formatting, install the desired external tools separately. Configure `.vscode/settings.json`.
 
-![Go To Definition Example](resources/goToDef_demo.gif)
+No external compiler is needed for highlighting, snippets, symbol navigation, or built-in ANTLR checks. Verilator, VCS, and Verible are not bundled. External tools must be available in the extension host environment, including when working remotely.
 
-### Find References
+## Commands
 
-![Find References Example](resources/find_references.gif)
+Open the Command Palette to run these commands:
 
-### Module Instantiation
+| Command | ID | Use |
+| --- | --- | --- |
+| SystemVerilog: Build index of modules in workspace | `systemverilog.build_index` | Rescan configured files and rebuild workspace symbols. |
+| SystemVerilog: Auto instantiate modules in workspace | `systemverilog.auto_instantiate` | Select an indexed module and insert an instance into the active editor. Keep the selection empty. |
+| SystemVerilog: Compile the opened document | `systemverilog.compile` | Run the selected external diagnostic backend on the active file. Save edits first. |
 
-![Module Instantiation Example](resources/moduleInit_demo.gif)
+Generated instances use named port connections with matching signal names. Parameterized modules include parameter overrides derived from their header. Review the generated instance, especially for complex declarations and expressions.
 
-## Recommendations
+## Configuration
 
-- If you have netlists in your workspace you can exclude them in the settings with `systemverilog.excludeIndexing`, e.g.: `**/syn/**`
-- When running in workspaces with a large number of files, the `systemverilog.documentSymbolsPrecision` setting may need to be reduced down to 'full_no_references'. Doing this will turn off the 'find references' feature which will dramatically speedup the parsing.
-- When you have large files, the `systemverilog.maxLineCountIndexing` setting can be tuned to prevent full parsing of these files, which will improve extension performance.
-- _Disclaimer_: This is not a functional tool that will compile and simulate HDL, but it will make it easier and more user-friendly to write and navigate SystemVerilog and Verilog.
-
-## Settings
-
-- `systemverilog.includeIndexing`: _Array_, Files included for indexing \([glob pattern](https://code.visualstudio.com/docs/editor/glob-patterns)\). Examples:
-  - Include files within the workspace's rtl folder (`*` at front of pattern denotes path is relative to workspace root): `**/rtl/**/*.{sv,v,svh,vh}`
-  - Add all files with a '.svp' extension: `**/*.svp`
-  - Add files only when in a specific workspace: `/abs/path/to/workspace/rtl/**/*.{sv,v,svh,vh}`
-- `systemverilog.disableIndexing`: _Boolean_, Disable indexing
-- `systemverilog.excludeIndexing`: _String_, Exclude files from indexing based on a [glob pattern](https://code.visualstudio.com/docs/editor/glob-patterns). Examples:
-  - Exclude all files in the 'synth' folder: `**/synth/*`
-  - Exclude more than one folder: `**/{synth,pnr}/**`
-  - Exclude .v files in the 'compile' folder: `**/compile/*.v`
-  - Exclude .v files in the 'compile' dir and exclude all files in the 'synth' folder: `{**/synth/**,**/compile/*.v}`
-- `systemverilog.forceFastIndexing`: _Boolean_, Use fast regular expression parsing
-- `systemverilog.enableIncrementalIndexing`: _Boolean_, Enable incremental indexation as files are opened
-- `systemverilog.parallelProcessing`: _Integer_, Number of files to process in parallel during indexing
-- `systemverilog.forceFastIndexing`: _Boolean_, force indexer to bo basic parsing. Good for when the extension takes too long to initialize.
-- `systemverilog.enableIncrementalIndexing`: _Boolean_, Enable incremental indexation as you open files.
-- `systemverilog.maxLineCountIndexing`: _Boolean_, When indexing a file, if the line count is larger than this number, _fast_ indexing will be used to improve symbol lookup performance, as fewer symbols will be parsed.
-- `systemverilog.documentSymbolsPrecision`: _String_, The level of detail the parser should use when looking for symbols:
-  - _full_: detect blocks, ports, parameters, classes, methods, typedefs, defines, labels, instantiations, assertions, and _references across files_.
-  - _full_no_references_: detect blocks, ports, parameters, classes, methods, typedefs, defines, labels, instantiations, and assertions.
-  - _declarations_: detect blocks, ports, parameters, classes, methods, typedefs, and defines.
-  - _fast_: detect only common blocks (module, class, interface, package, program) without hierarchy.
-- `systemverilog.antlrVerification`: _Boolean_, Use ANTLR parser to verify code in real-time
-- `systemverilog.verifyOnOpen`: _Boolean_, Run ANTLR verification on all files when opened.
-- `systemverilog.launchConfigurationVerilator`: _String_, Command to run when launching verilator
-  - Default: _verilator --sv --lint-only --language 1800-2012 --Wall_
-  - If not in path, replace _verilator_ with the appropriate command
-- `systemverilog.launchConfigurationVCS`: _String_, Command to run when launching VCS
-  - Default: _vcs_
-  - If not in path, replace _vcs_ with the appropriate command
-- `systemverilog.launchConfigurationVerible`: _String_, Command to run when launching Verible
-  - Default: _verible-verilog-lint_
-  - If not in path, replace _verible-verilog-lint_ with the appropriate command
-- `systemverilog.excludeCompiling`: _String_, Files excluded from compiling when saved based on a [glob pattern](https://code.visualstudio.com/docs/editor/glob-patterns)
-- `systemverilog.compileOnSave`: _Boolean_, Compile files when saved
-  - Default: `true`
-- `systemverilog.compilerType`: _String_, Dropdown list to select a compiler type
-  - Default: `Verilator`
-- `systemverilog.trace.server`: _String_, Dropdown to select verbosity of LSP message tracing
-- `systemverilog.compileOnOpen`: _Boolean_, Compile all files when opened
-  - Default: `false`
-
-### Customizations
-
-Use the provided settings in a user or workspace `settings.json` as appropriate. Here are a few examples:
+Set options in user settings or `.vscode/settings.json`. This example enables compile-on-save; it is disabled by default:
 
 ```json
 {
-  "editor.bracketPairColorization.enabled": true, // turn on bracket pair coloring
-  "editor.guides.bracketPairs": "active", // turn on bracket pair guides
-  // Change theme default colors for specific tokens
-  // To find tokens use: https://code.visualstudio.com/api/language-extensions/syntax-highlight-guide#scope-inspector
-  "editor.tokenColorCustomizations": {
-    // Customize per theme or globally
-    "[Theme Name]": {
-      "textMateRules": [
-        {
-          // Workaround: Extension marks escaped identifiers as regular expressions to prevent bracket matching,
-          //             so recoloring it back to identifier color
-          "scope": ["string.regexp.identifier.systemverilog"],
-          "settings": {
-            "foreground": "#e06c75"
-          }
-        }
-      ]
-    }
+  "systemverilog.includeIndexing": ["**/*.{sv,v,svh,vh}"],
+  "systemverilog.excludeIndexing": "**/{synth,pnr}/**",
+  "systemverilog.documentSymbolsPrecision": "full",
+  "systemverilog.compilerType": "Verilator",
+  "systemverilog.compileOnSave": true,
+  "systemverilog.antlrVerification": false,
+  "systemverilog.formatCommand": "verible-verilog-format",
+  "[systemverilog]": {
+    "editor.defaultFormatter": "Holey.systemverilog"
   },
-  // Customize formatting command to suite preferences
-  "systemverilog.formatCommand": "verible-verilog-format --assignment_statement_alignment=preserve --case_items_alignment=infer --class_member_variables_alignment=infer --formal_parameters_alignment=preserve --formal_parameters_indentation=indent --named_parameter_alignment=flush-left --named_parameter_indentation=indent --named_port_alignment=flush-left --named_port_indentation=indent --net_variable_alignment=preserve --port_declarations_alignment=preserve --port_declarations_indentation=indent",
-  // Add additional file extensions to associate with SystemVerilog and include them in the indexing
-  "files.associations": {
-    "*.svi": "systemverilog",
-    "*.svp": "systemverilog",
-    "*.pkg": "systemverilog"
-  },
-  "systemverilog.includeIndexing": ["**/*.{sv,v,svh,vh,svi,svp,pkg}"]
+  "[verilog]": {
+    "editor.defaultFormatter": "Holey.systemverilog"
+  }
 }
 ```
 
-### Handling Spaces In Executable Paths
+For Verible linting, set `systemverilog.compilerType` to `Verible` and use `systemverilog.launchConfigurationVerible`. For VCS, select `VCS` and configure `systemverilog.launchConfigurationVCS` with the arguments your project requires. The extension appends the active file path to the selected launch command; add include directories, defines, or file lists yourself. Compiler commands do not implement the formatter's placeholder substitution.
 
-Please exercise caution when setting an executable path in the settings, such as the case with  `systemverilog.formatCommand`, `systemverilog.launchConfigurationVerilator`, `systemverilog.launchConfigurationVCS`, and `systemverilog.launchConfigurationVerible`. Any spaces will be assumed to be arguments and not the executable itself. In Windows, for example, you might have an executable configured as follows:
+To enable built-in syntax checking on edits and on open, set both `systemverilog.antlrVerification` and `systemverilog.verifyOnOpen` to `true`. `verifyOnOpen` alone does not enable verification.
+
+### Settings reference
+
+Defaults below come from `package.json`.
+
+| Setting | Type | Default | Purpose |
+| --- | --- | --- | --- |
+| `systemverilog.disableIndexing` | `boolean` | `false` | Disable automatic startup indexing when no saved index is available. |
+| `systemverilog.parallelProcessing` | `integer` | `10` | Number of files processed concurrently during indexing. |
+| `systemverilog.includeIndexing` | `array` | `["**/*.{sv,v,svh,vh}"]` | Array of glob patterns included in workspace indexing. |
+| `systemverilog.excludeIndexing` | `string` | `""` | Glob pattern excluded from indexing. |
+| `systemverilog.forceFastIndexing` | `boolean` | `false` | Force fast regular expression indexing. |
+| `systemverilog.enableIncrementalIndexing` | `boolean` | `true` | Update the index when files are saved or become active. |
+| `systemverilog.maxLineCountIndexing` | `integer` | `2000` | Use fast indexing for files exceeding this line count. |
+| `systemverilog.documentSymbolsPrecision` | `string` | `"full"` | Symbol detail: `full`, `full_no_references`, `declaration`, or `fast`. |
+| `systemverilog.compilerType` | `string` | `"Verilator"` | Diagnostic backend: `Verilator`, `VCS`, or `Verible`. |
+| `systemverilog.excludeCompiling` | `string` | `""` | Glob pattern checked for compile-on-save; matched against the document URI. |
+| `systemverilog.launchConfigurationVerilator` | `string` | `"verilator --sv --lint-only --language 1800-2012 --Wall"` | Verilator executable and arguments. |
+| `systemverilog.launchConfigurationVCS` | `string` | `"vcs"` | VCS executable and arguments. |
+| `systemverilog.launchConfigurationVerible` | `string` | `"verible-verilog-lint"` | Verible lint executable and arguments. |
+| `systemverilog.formatCommand` | `string` | `"verible-verilog-format"` | Formatter executable and arguments. |
+| `systemverilog.compileOnSave` | `boolean` | `false` | Run the selected external tool on save. |
+| `systemverilog.trace.server` | `string` | `"off"` | Language server trace level: `off`, `messages`, or `verbose`. |
+| `systemverilog.antlrVerification` | `boolean` | `false` | Enable built-in ANTLR syntax checks on edits. |
+| `systemverilog.verifyOnOpen` | `boolean` | `false` | Check opened documents with ANTLR; also requires `antlrVerification`. |
+| `systemverilog.compileOnOpen` | `boolean` | `false` | Run the selected external tool when a document opens. |
+
+### Indexing precision and performance
+
+- `full`: declarations, nested constructs, ports, parameters, methods, typedefs, defines, labels, instantiations, assertions, and reference candidates.
+- `full_no_references`: similar declaration coverage without reference candidates; Find All References loses coverage.
+- `declaration`: reduced declaration parsing. The accepted setting value is singular: `declaration`.
+- `fast`: common block names such as modules, classes, interfaces, packages, and programs, without hierarchy.
+
+Large workspaces automatically use reduced parsing based on file count and `parallelProcessing`. Files longer than `maxLineCountIndexing` also use fast parsing. Exclude generated netlists or build folders to reduce CPU and memory use. Rebuild the index after changing indexing settings. If document symbol behavior still uses the previous configuration, reload the window.
+
+Include patterns starting with `*` are searched through VS Code's workspace file search; other patterns use filesystem globbing. Use `**/rtl/**/*.{sv,v,svh,vh}` for workspace-relative RTL or an absolute path for an external source tree. Additional file extensions require both a language association and an indexing pattern:
 
 ```json
-"systemverilog.formatCommand" : "C:\\Program Files\\verible\\bin\\verible-verilog-format --case_items_alignment=infer"
+{
+  "files.associations": {
+    "*.svp": "systemverilog",
+    "*.svi": "systemverilog"
+  },
+  "systemverilog.includeIndexing": ["**/*.{sv,v,svh,vh,svp,svi}"]
+}
 ```
 
-Because of the space in 'Program Files', the extension will infer that the executable is `C:\\Program` with two arguments: `Files\\verible\\bin\\verible-verilog-format` and `--case_items_alignment=infer`. This breaks the executable path. There are a couple solutions for tihs:
+### Formatter behavior
 
-1. (Prefered) Add the executable to your PATH and call it directly.
-  - [Windows instructions](https://www.computerhope.com/issues/ch000549.htm)
-  - [Linux Instructions](https://phoenixnap.com/kb/linux-add-to-path)
-  - [Mac Instructions](https://www.architectryan.com/2012/10/02/add-to-the-path-on-mac-os-x-mountain-lion/#.Uydjga1dXDg)
+`systemverilog.formatCommand` accepts the executable followed by arguments. The provider sends the full editor text to standard input and uses `--lines=start-end` for selection formatting. It runs in the document's directory for saved files.
+
+Supported formatter placeholders are `${workspaceRoot}`, `${workspaceFolder}`, `${cwd}`, and `${env.NAME}`. The environment form uses a dot, for example `${env.VERIBLE_HOME}`. The command is split on whitespace, so quoting does not make executable paths containing spaces work. Use an executable on `PATH` or a path without spaces.
+
+## Build tasks
+
+User-defined `.vscode/tasks.json` tasks can use the following contributed problem matchers:
+
+- Questa/ModelSim: `$vlog-error`, `$vlog-warn`, `$vlog-info`, `$vsim-error`, `$vsim-warning`, `$vsim-info`.
+- Verilator: `$verilator-error`, `$verilator-warning`, `$verilator-error-v5`, `$verilator-warning-v5`.
+- Verible: `$verible-error`, `$verible-warning`, `$verible-info`.
+
+For example:
 
 ```json
-"systemverilog.formatCommand" : "verible-verilog-format --case_items_alignment=infer"
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Questa: compile",
+      "type": "shell",
+      "command": "vlog",
+      "args": ["-sv", "${file}"],
+      "problemMatcher": ["$vlog-error", "$vlog-warn", "$vlog-info"]
+    }
+  ]
+}
 ```
 
-2. If you can't edit your path (maybe because of privileges), then don't use spaces in paths. Either move the executable to a different location with no spaces, or (in the case of windows) you can use [DOS short names](https://superuser.com/questions/348079/how-can-i-find-the-short-path-of-a-windows-directory-file) as follows:
+Task problem matchers are separate from the three diagnostic backends. Providing Questa/ModelSim matchers does not add a Questa backend to `compilerType`.
 
-```json
-"systemverilog.formatCommand" : "C:\\PROGRA~1\\verible\\bin\\verible-verilog-format --case_items_alignment=infer"
-```
+## Implementation and limitations
 
+The extension client registers navigation, hover, formatting, and module instantiation providers. `src/parser.ts` uses regular expressions for symbols, and `src/indexer.ts` maintains the workspace index. A separate IPC language server in `src/server.ts` publishes ANTLR and external tool diagnostics.
 
+- Symbol resolution is heuristic, rather than full semantic analysis or elaboration. Complex syntax may produce incomplete or ambiguous navigation results.
+- Completion and a module hierarchy tree have work-in-progress code under `src/wip`, but are not registered as active features. Snippets are available; semantic IntelliSense completion is not implemented.
+- ANTLR preprocessing replaces local macro text and removes `ifdef`/`ifndef` blocks. It is not a complete preprocessor, may skip conditional code, and may shift reported locations. Do not assume full IEEE compliance.
+- External compilation reads the saved file on disk, not the unsaved editor buffer. Its initialization uses the first workspace folder, so multi-root compilation has limited workspace handling. Formatting chooses the document's workspace instead.
+- `excludeCompiling` is applied to compile-on-save; manual compilation and compile-on-open do not check it.
+- Verible style findings from the built-in backend are published as informational diagnostics. Task matchers can assign different severity.
+- Diagnostics from ANTLR and external tools share the same document diagnostic channel and can overwrite each other.
+- This extension provides editor support and command integrations; it does not provide a simulation UI, waveform viewer, or debugger for HDL.
 
+If symbols appear stale or incomplete, rebuild the index. Check include/exclude patterns and precision. For formatter failures, check the executable path and source syntax. For external diagnostics, verify the configured command in the extension host environment and inspect the **SystemVerilog** / **SystemVerilog Language Server** Output channels.
 
+## Development
 
-## Known Issues
-
-- Initial indexing might hog CPU/RAM when looking through files in very large workspaces
-
-## Future
-
-- Tree view of module hierarchy
-- References document
-- Back-end Language server for SystemVerilog
-- Update workspace state to save to [storagePath](https://code.visualstudio.com/api/advanced-topics/remote-extensions#persisting-extension-data-or-state)
-
-## Contributing
-
-- If you want to contribute with the project please fork this repository, clone it, make changes (preferably in a branch other than master) and finally create a Pull Request (more details [here](https://guides.github.com/activities/forking/)).
-- To debug the extension locally first install the required dependencies (in the repository's root directory):
+Install Node.js/npm. Install a Java runtime for the ANTLR generator. Run these commands:
 
 ```bash
-npm install
-```
-
-- Then compile the project at least once (this will generate the SystemVerilog lexer and parser in `src\compiling\ANTLR\grammar\build`):
-
-```bash
+npm ci
 npm run compile
+npm run webpack:dev
 ```
 
-- Finally, run the "Client + Server" run configuration:
+`compile` regenerates the TextMate JSON grammar and ANTLR TypeScript parser, then compiles TypeScript. `webpack:dev` bundles the client and server. Launch **Client + Server** from VS Code's Run and Debug panel to debug both processes. The server debugger uses port `6009`.
 
-![Debug configuration](resources/client_server_configuration.png)
+Useful checks and release build:
 
-## Release Notes
+```bash
+npm run lint
+npm test
+npm run coverage
+npm run vscode:prepublish
+```
 
-See the [changelog](CHANGELOG.md)
+`npm test` compiles the project and launches the VS Code Electron integration tests, downloading stable VS Code when needed. A graphical environment or virtual display is needed for Electron. `vscode:prepublish` compiles and creates production bundles in `dist/client` and `dist/server`; packaging as VSIX is a separate step using VS Code extension packaging tooling.
+
+| Location | Responsibility |
+| --- | --- |
+| `src/extension.ts` | Client activation, provider registration, commands, index cache. |
+| `src/parser.ts`, `src/indexer.ts`, `src/symbol.ts` | Symbol detection, workspace indexing, symbol representation. |
+| `src/providers/` | Navigation, references, hover, formatting, instantiation. |
+| `src/server.ts`, `src/compiling/` | Language server, ANTLR verification, external diagnostics. |
+| `syntaxes/`, `configs/`, `snippets/` | Highlighting, language configuration, snippets. |
+| `src/test/` | Integration tests and parser/compiler fixtures. |
+| `build/` | Client and server webpack configuration. |
+
+See [CHANGELOG.md](CHANGELOG.md) for release history and [LICENSE](LICENSE) for the MIT license.
