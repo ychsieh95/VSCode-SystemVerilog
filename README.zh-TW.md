@@ -2,7 +2,7 @@
 
 [English (en-US)](README.md) | 繁體中文（台灣，zh-TW）
 
-這個 VS Code 擴充功能協助閱讀、導覽及撰寫 Verilog 與 SystemVerilog。本儲存庫宣告的版本為 **0.13.12**，擴充功能識別碼為 **`Holey.systemverilog`**，VS Code 相容版本為 **`^1.61.0`**。
+這個 VS Code 擴充功能協助閱讀、導覽及撰寫 Verilog 與 SystemVerilog。本儲存庫宣告的版本為 **0.13.13**，擴充功能識別碼為 **`Holey.systemverilog`**，VS Code 相容版本為 **`^1.61.0`**。
 
 ## 功能
 

@@ -2,7 +2,7 @@
 
 English (en-US) | [繁體中文（台灣）](README.zh-TW.md)
 
-A VS Code extension for reading, navigating, and writing Verilog and SystemVerilog. This repository declares version **0.13.12**, extension ID **`Holey.systemverilog`**, and VS Code compatibility **`^1.61.0`**.
+A VS Code extension for reading, navigating, and writing Verilog and SystemVerilog. This repository declares version **0.13.13**, extension ID **`Holey.systemverilog`**, and VS Code compatibility **`^1.61.0`**.
 
 ## Features
 
